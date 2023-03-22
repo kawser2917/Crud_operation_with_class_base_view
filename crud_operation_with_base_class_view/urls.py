@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.AddShow.as_view(),name="addandshow"),
     path("delete/<int:id>/",views.DeleteData.as_view(),name="deletedata"),
-    path("update/<int:id>/",views.update_data,name="updatedata"),
+    path("update/<int:id>/",views.UpdateView.as_view(),name="updatedata"),
 ]

@@ -1,6 +1,7 @@
 from django.shortcuts import render,HttpResponseRedirect
 from .forms import *
 from django.views.generic.base import TemplateView, RedirectView
+from django.views import View
 
 # Create your views here.
 
@@ -20,31 +21,33 @@ class AddShow(TemplateView):
             fm = StudentRegistration()
             return HttpResponseRedirect('/')
 
-
-
-# def add_show(request):
-#     if request.method == "POST":
-#         fm = StudentRegistration(request.POST)
-#         if fm.is_valid():
-#             fm.save()
-#             fm = StudentRegistration()
-#     else:
-#         fm = StudentRegistration()
-#     Stud = User.objects.all()
-#     return render(request,"enroll/addandshow.html",{"form":fm,"stu":Stud})
-
 # This function is responsible for updating data
-def update_data(request,id):
-    if request.method == "POST":
+class UpdateView(View):
+    def get(self,request,id):
+        pi = User.objects.get(pk=id)
+        fm = StudentRegistration(instance=pi)
+        return render(request,"enroll/updatestudent.html",{"form":fm})
+    def post(self,request,id):
         pi = User.objects.get(pk=id)
         fm = StudentRegistration(request.POST,instance=pi)
         if fm.is_valid():
             fm.save()
             return HttpResponseRedirect('/')
-    else:
-        pi = User.objects.get(pk=id)
-        fm = StudentRegistration(instance=pi)
-    return render(request,"enroll/updatestudent.html",{"form":fm})
+
+
+
+
+# def update_data(request,id):
+#     if request.method == "POST":
+#         pi = User.objects.get(pk=id)
+#         fm = StudentRegistration(request.POST,instance=pi)
+#         if fm.is_valid():
+#             fm.save()
+#             return HttpResponseRedirect('/')
+#     else:
+#         pi = User.objects.get(pk=id)
+#         fm = StudentRegistration(instance=pi)
+#     return render(request,"enroll/updatestudent.html",{"form":fm})
 # For deleting student
 class DeleteData(RedirectView):
     url = '/'
